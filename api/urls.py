@@ -5,8 +5,9 @@ from . import views
 urlpatterns = [
     path('article/', views.showArticle, name="article"),
     path('reviews/', views.showComment, name="review"),
-    path('article/<int:pk>', views.AddUpvote.as_view(), name='add-upvotes'),
+    path('article/<int:pk>', views.addUpvote, name='add-upvotes'),
     path('reviews/<int:pk>', views.showCurrentCommet, name='add-comment'),
+    path('add-comment/<int:pk>', views.addComment, name='add-comment'),
 
     path('api', views.apiView, name="api-view"),
     path('task-list/', views.ArticleList, name="task-list"),

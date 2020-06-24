@@ -28,14 +28,15 @@
                 <td>{{ review.parent }}</td>
                 <td>{{ review.article }}</td>
             </tr>
-              {% endfor %}
+            {% endfor %}
         </table>
-        <form action="">
-            <label for="fname">Name:</label><br>
-            <input type="text" id="fname" name="name" value="John"><br>
+        <form method="post" action="/api/add-comment/{{ reviews.first.article.id }}">
+            {% csrf_token %}
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" value="John"><br>
             <label for="comment">Your comment</label><br>
-            <textarea name="text" id="comment" required=""></textarea>
-          <input type="submit" value="Submit">
+            <textarea name="comment" id="comment" ></textarea>
+            <button type="submit", name="add", value="add">Comment</button>
         </form>
     </div>
 </body>

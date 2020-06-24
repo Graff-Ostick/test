@@ -31,7 +31,10 @@
                 <td>{{ post.author }}</td>
                 <td>{{ post.upvotes }}</td>
                 <td>
-                    <a href="/api/article/{{post.id}}">Upvote</a>
+                    <form method="post" action="/api/article/{{post.id}}">
+                        {% csrf_token %}
+                        <button type="submit", name="save">Upvote</button>
+                    </form>
                 </td>
                 <td>
                     <a href="/api/reviews/{{post.id}}">See comment</a>

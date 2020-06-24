@@ -1,34 +1,33 @@
 from django.shortcuts import render
-from django.views.generic.base import View
-from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import ArticleSerializer, ReviewSeriallizer
 from .models import Article, Review
-from .forms import ArticleForm
 import schedule
 
 
-class AddUpvote(View):
+def addUpvote(request,pk):
+    articles = Article.objects.get(id=pk)
+    if request.method == "POST":
+        articles.upvotes +=1
+        articles.save()
+    return showArticle(request)
 
-    def post(self, request, pk):
-        form = ArticleForm(request.POST)
-        article = Article.objects.get(id=pk)
-        if form.is_valid():
-            form.save(commit=False)
-            form.uppvote +=1
-            form.save()
-        return redirect(article.get_absolute_url())
+def addComment(request,pk):
+    article = Article.objects.get(id=pk)
+    reviews = Review.objects.filter(article=pk)
+    name = request.POST.get("name")
+    text = request.POST.get("comment")
+    if request.method == "POST":
+        if name or text:
+            reviews.create(name=name, text=text, article=article)
+    return render(request, 'comment.html', {"reviews": reviews})
 
 def showArticle(request):
     articles = Article.objects.all()
     return render(request, 'article.html', {"article":articles})
 
-'''def showCurrentArticle(request,pk):
-    articles = Article.objects.get(id=pk)
-    return render(request, 'upvote.html', {"article":articles})
-'''
 def showCurrentCommet(request,pk):
     reviews = Review.objects.filter(article=pk)
     return render(request, 'comment.html', {"reviews":reviews})
