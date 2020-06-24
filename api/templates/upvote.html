@@ -7,11 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css'%}">
-    <title>Article</title>
+    <title>Document</title>
 </head>
 <body>
     <div class="container">
-    {% if article.count > 0 %}
         <h2>List of articles</h2>
         <table>
             <tr>
@@ -21,25 +20,21 @@
                 <th>author</th>
                 <th>upvotes</th>
             </tr>
-
-        {% for post in article %}
-
             <tr>
-                <td>{{ post.title }}</td>
-                <td>{{ post.date }}</td>
-                <td>{{ post.link }}</td>
-                <td>{{ post.author }}</td>
-                <td>{{ post.upvotes }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.date }}</td>
+                <td>{{ article.link }}</td>
+                <td>{{ article.author }}</td>
+                <td>{{ article.upvotes }}</td>
                 <td>
-                    <a href="/api/article/{{post.id}}">Upvote</a>
-                </td>
-                <td>
-                    <a href="/api/reviews/{{post.id}}">See comment</a>
+                    <form action="/api/article/" method="post">
+                         {% csrf_token %}
+
+                        <input type="submit" value="Upvote">
+                    </form>
                 </td>
             </tr>
-        {% endfor %}
         </table>
-    {% endif %}
     </div>
 </body>
 </html>

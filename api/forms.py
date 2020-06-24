@@ -6,5 +6,5 @@ class ArticleForm(forms.ModelForm):
     """Form review"""
     class Meta(Article):
         model = Article
-        fields = 'upvotes'
+        fields = ('upvotes',)
 

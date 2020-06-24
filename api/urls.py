@@ -1,11 +1,13 @@
 from django.conf.urls import url
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    url('article', views.showArticle, name="article"),
-    url('reviews', views.showComment, name="review"),
-    path('review/<int:pk>/', views.AddUpvotes.as_view(), name='add_upvotes'),
+    path('article/', views.showArticle, name="article"),
+    path('reviews/', views.showComment, name="review"),
+    path('article/<int:pk>', views.AddUpvote.as_view(), name='add-upvotes'),
+    path('reviews/<int:pk>', views.showCurrentCommet, name='add-comment'),
+
     path('api', views.apiView, name="api-view"),
     path('task-list/', views.ArticleList, name="task-list"),
     path('task-review/<str:pk>', views.ArticleReview, name="task-review"),

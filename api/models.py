@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.utils.timezone import now
 from django.db import models
 
@@ -25,8 +26,8 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
-    def add_upvote(self):
-        self.upvotes+=1
+    def get_absolute_url(self):
+        return reverse('article', kwargs={'slug': self.link})
 
 
     def resetUpvotes(self):
@@ -49,3 +50,9 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.article}"
+
+class User(models.Model):
+    """ user that can comment and upvote """
+    name = models.CharField("Name", max_length=100)
+    username = models.CharField("Name", max_length=100)
+

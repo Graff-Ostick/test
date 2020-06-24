@@ -3,27 +3,39 @@ from django.views.generic.base import View
 from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 from .serializers import ArticleSerializer, ReviewSeriallizer
 from .models import Article, Review
+from .forms import ArticleForm
 import schedule
+
+
+class AddUpvote(View):
+
+    def post(self, request, pk):
+        form = ArticleForm(request.POST)
+        article = Article.objects.get(id=pk)
+        if form.is_valid():
+            form.save(commit=False)
+            form.uppvote +=1
+            form.save()
+        return redirect(article.get_absolute_url())
 
 def showArticle(request):
     articles = Article.objects.all()
     return render(request, 'article.html', {"article":articles})
 
+'''def showCurrentArticle(request,pk):
+    articles = Article.objects.get(id=pk)
+    return render(request, 'upvote.html', {"article":articles})
+'''
+def showCurrentCommet(request,pk):
+    reviews = Review.objects.filter(article=pk)
+    return render(request, 'comment.html', {"reviews":reviews})
+
 def showComment(request):
     reviews = Review.objects.all()
-    return render(request, 'review.html', {"reviews":reviews})
-
-class AddUpvotes(View):
-    """"review"""
-    def post(self, request, pk):
-        form = Article()
-        article = Article.objects.get(id=pk)
-        if form.is_valid():
-            form.article = article
-            form.save()
-        return render(request, 'article.html', {'upvote':form})
+    return render(request, 'reviews.html', {"reviews":reviews})
 
 @api_view(['GET'])
 def apiView(request):
