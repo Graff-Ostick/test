@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+    {% if article.count > 0 %}
+        <h2>List of articles</h2>
+        <table>
+            <tr>
+                <th>Titles</th>
+                <th>date</th>
+                <th>link</th>
+                <th>author</th>
+                <th>upvotes</th>
+            </tr>
+            {% csrf_token %}
+        {% for post in article %}
+
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.date }}</td>
+                <td>{{ post.link }}</td>
+                <td>{{ post.author }}</td>
+                <td>{{ post.upvotes }}</td>
+                <td>
+                    <form action="{% url 'add_upvotes' post.id %}" method="post" id="formReview">
+                        <input type="submit" value="Upvote">
+                    </form>
+                </td>
+                <td><a href=""> Comment </a></td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+    </div>
+</body>
+</html>
